@@ -15,7 +15,7 @@ const register = async (req, res) => {
     try {
         const { name, phone, email, password } = req.body;
 
-        if (!name, !email, !phone, !password) {
+        if (!name || !email || !phone || !password) {
             return res.json({ success: false, message: "Missing Details" });
         }
 
@@ -27,21 +27,21 @@ const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await UserModel.create({name, phone, email, password: hashedPassword});
+        const user = await UserModel.create({ name, phone, email, password: hashedPassword });
 
-        const token = jwt.sign({id:user._id}, process.env.JWT_USER_SECRET_KEY, {expiresIn:'3d'})
+        const token = jwt.sign({ id: user._id }, process.env.JWT_USER_SECRET_KEY, { expiresIn: '3d' })
 
         res.cookie('token', token, {
             httpOnly: true, //Prevent Javascript to access cookie
-            secure:process.env.NODE_ENV === 'production', //Use secure cookie in production
+            secure: process.env.NODE_ENV === 'production', //Use secure cookie in production
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict', //CSRF Production
-            maxAge:3 * 24 * 60 * 60 * 1000, //Cookie expiration time
+            maxAge: 3 * 24 * 60 * 60 * 1000, //Cookie expiration time
         })
 
-        return res.json({success:true, user:{phone:user.phone, email:user.email, name:user.name}});
+        return res.json({ success: true, user: { phone: user.phone, email: user.email, name: user.name } });
     } catch (error) {
         console.log(error.message);
-        res.json({success:false, message:error.message});
+        res.json({ success: false, message: error.message });
     }
 }
 
@@ -75,9 +75,9 @@ const login = async (req, res) => {
             maxAge: 3 * 24 * 60 * 60 * 1000,
         });
 
-        return res.json({ 
-            success: true, 
-            message: 'Login successful', 
+        return res.json({
+            success: true,
+            message: 'Login successful',
             user: {
                 id: user._id,
                 name: user.name,
@@ -117,10 +117,10 @@ const logout = async (req, res) => {
         res.clearCookie('token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite:process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         })
 
-        return res.json({success:true, message: "Logged Out"})
+        return res.json({ success: true, message: "Logged Out" })
     } catch (error) {
         console.log(error.message);
         res.json({ success: false, message: error.message });
