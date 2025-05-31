@@ -13,13 +13,13 @@ const userRoute = require('./routes/user-router');
 const adminRoute = require('./routes/admin-router');
 const documentRoute = require('./routes/document-router');
 
-const clorsOption = {
-    origin: "http://localhost:5173",
-    methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
-    credentials: true,
-};
+// const clorsOption = {
+//     origin: ["http://localhost:5173", "https://unicornverify.netlify.app"],
+//     methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
+//     credentials: true,
+// };
 
-app.use(cors(clorsOption));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
