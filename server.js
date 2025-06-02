@@ -14,7 +14,7 @@ const adminRoute = require('./routes/admin-router');
 const documentRoute = require('./routes/document-router');
 
 const clorsOption = {
-    origin: ["http://localhost:5173", "https://unicornverify.netlify.app"],
+    origin: ["http://localhost:5173", "https://unicornverify.netlify.app", "https://unicornverify.vercel.app"],
     methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
     credentials: true,
 };
